@@ -1,0 +1,48 @@
+.input-deskripsi {
+  margin-top: 50px;
+}
+
+.input-deskripsi trix-editor {
+  min-height: 200px;
+}
+
+.tambah-produk .gambar {
+  position: absolute;
+  border: 1px solid grey;
+  right: 10%;
+  width: 300px;
+  height: 300px;
+}
+
+.tambah-produk form {
+  width: 60%;
+}
+.gambar img {
+  width: 90%;
+  height: 90%;
+  margin: auto;
+  box-sizing: border-box;
+  object-fit: cover;
+}
+
+
+
+@media (min-width: 200px) and (max-width: 970px) {
+  .gambar {
+    top: 130px;
+    position: static !important;
+    margin-bottom: 50px;
+  }
+
+  .tambah-produk form {
+    width: 100%;
+  }
+
+  .navbar-nav {
+    margin-right: 100px !important;
+  }
+
+  .sidebar {
+    top: 0 !important;
+  }
+}
