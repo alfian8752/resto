@@ -1,7 +1,7 @@
 <?php
 include '../db.php';
 
-if (session_status() == PHP_SESSION_NONE) session_start();
+// if (session_status() == PHP_SESSION_NONE) session_start();
 
 //     $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE username = '$username' AND pass = '$password'"));
 //     $_SESSION['user'] = $user;
@@ -17,10 +17,18 @@ if (session_status() == PHP_SESSION_NONE) session_start();
 //         $error = true;
 //     }
 if (isset($_POST['submit'])) {
+    $errors = [];
     $username = $_POST['username'];
-    $username = $_POST['nama'];
-    $username = $_POST['email'];
+    $email = $_POST['email'];
     $password = $_POST['password'];
+
+    if (strlen($username) < 5) {
+        $errors['username'] = 'username minimal memiliki 5 karakter';
+    } else if (strlen($password < 8)) {
+        $errors['password'] = 'Password minimal memiliki 8 karakter';
+    } else {
+        mysqli_query($conn, "INSERT INTO user VALUES ('', '$username', '$email', '$password', null)");
+    }
 }
 ?>
 
@@ -45,6 +53,7 @@ if (isset($_POST['submit'])) {
         form button {
             margin: auto;
         }
+
         a {
             text-decoration: none;
         }
@@ -55,22 +64,47 @@ if (isset($_POST['submit'])) {
     <div class="container">
         <h3 class="login-title text-center">Register</h3>
         <form action="" method="POST">
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Nama</label>
                 <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?= (isset($_POST['username'])) ? $_POST['username'] : '' ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Username</label>
-                <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?= (isset($_POST['username'])) ? $_POST['username'] : '' ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">email</label>
-                <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?= (isset($_POST['username'])) ? $_POST['username'] : '' ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
-                <input type="password" class="form-control" name="password" id="exampleInputPassword1" required>
-            </div>
+            </div> -->
+            <?php
+            if (isset($errors)) : ?>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Username</label>
+                    <input type="text" class="form-control <?= (isset($errors['username'])) ? 'is-invalid' : '' ?>" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?= $username ?>" required>
+                    <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                        <?= $errors['username'] ?>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Username</label>
+                    <input type="text" class="form-control <?= (isset($errors['email'])) ? 'is-invalid' : '' ?>" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?= $email ?>" required>
+                    <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                        <?= $errors['email'] ?>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Password</label>
+                    <input type="text" class="form-control <?= (isset($errors['password'])) ? 'is-invalid' : '' ?>" name="password" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                    <div id="validationServerUsernameFeedback" class="invalid-feedback">
+                        <?= $errors['password'] ?>
+                    </div>
+                </div>
+            <?php else : ?>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Username</label>
+                    <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">email</label>
+                    <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" id="exampleInputPassword1" required>
+                </div>
+            <?php endif ?>
             <p>Sudah punya akun? <a href="login.php">Login</a></p>
             <button type="submit" name="submit" class="btn btn-primary w-75 m-auto" value="submit">Login</button>
         </form>

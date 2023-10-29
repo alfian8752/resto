@@ -49,9 +49,11 @@ header("Refresh: $sec; url=$page");
                         <td><?= $item['nama'] ?></td>
                         <td><?= $item['waktu'] ?></td>
                         <td>
-                            <a href="pesanan-selesai.php?id=<?= $item['id']?>">
-                                <button>Selesai</button>
+                            <?php if($item['stat'] == 'menunggu') : ?>
+                            <a href="terima-pesanan.php?id=<?= $item['id']?>">
+                                <button>Terima</button>
                             </a>
+                            <?php endif ?>
                         </td>
                     </tr>
                 <?php $n++;

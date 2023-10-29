@@ -75,7 +75,7 @@ if (isset($_POST['submit'])) {
                 <input type="password" class="form-control" name="password" id="exampleInputPassword1" required>
             </div>
             <p>Belum punya akun? <a href="register.php">Register</a></p>
-            <button type="submit" name="submit" class="btn btn-primary w-75 m-auto" value="submit">Login</button>
+            <button type="submit" name="submit" class="btn btn-primary w-100 m-auto" value="submit">Login</button>
         </form>
     </div>
 

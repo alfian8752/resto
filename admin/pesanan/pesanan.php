@@ -1,7 +1,7 @@
 <?php
 // require '../../php/delete_pesanan.php';
 include '../../db.php';
-$pesanan = mysqli_query($conn, 'SELECT * FROM pesanan INNER JOIN produk ON pesanan.produk = produk.id INNER JOIN user ON pesanan.user = user.id');
+$pesanan = mysqli_query($conn, 'SELECT * FROM pesanan INNER JOIN produk ON pesanan.produk = produk.id_produk INNER JOIN user ON pesanan.user = user.id');
 ?>
 
 <!doctype html>
@@ -71,7 +71,7 @@ $pesanan = mysqli_query($conn, 'SELECT * FROM pesanan INNER JOIN produk ON pesan
 </head>
 
 <body>
-  <?php include '../navbar.php'; ?>  
+  <?php include '../navbar.php'; ?>
 
   <div class="container-fluid">
     <div class="row">
@@ -106,10 +106,14 @@ $pesanan = mysqli_query($conn, 'SELECT * FROM pesanan INNER JOIN produk ON pesan
                 <tr>
                   <th><?= $n . '.' ?></th>
                   <td><?= $item['judul'] ?></td>
-                  <td><?= $item['nama'] ?></td>
+                  <td><?= $item['username'] ?></td>
                   <td><?= $item['waktu'] ?></td>
                   <td>
-                    <a href="pesanan-selesai.php?id=<?= $item['id_pesanan'] ?>" class="btn btn-success">Selesai</a>
+                    <?php if ($item['stat'] == 'menunggu') { ?>
+                      <a href="terima-pesanan.php?id=<?= $item['id_pesanan'] ?>" class="btn btn-primary">Terima</a>
+                    <?php } else  if($item['stat'] == 'proses') { ?>
+                      <a href="pesanan-selesai.php?id=<?= $item['id_pesanan'] ?>" class="btn btn-success">Selesai</a>
+                    <?php } ?>
                   </td>
                 </tr>
               <?php $n++;
@@ -121,7 +125,7 @@ $pesanan = mysqli_query($conn, 'SELECT * FROM pesanan INNER JOIN produk ON pesan
     </div>
   </div>
 
-  <script src="../..//dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../../dist/js/bootstrap.bundle.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
   <script src="../dashboard.js"></script>

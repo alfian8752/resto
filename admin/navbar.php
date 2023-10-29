@@ -12,12 +12,12 @@ $admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE id = $
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
     <div class="dropend">
-        <div class="row">
+        <!-- <div class="row"> -->
             <img src="/pkl/onlineshop/assets/img/user.png" style="max-width: 50px;" class="col dropdown-toggle p-1" data-bs-toggle="dropdown" aria-expanded="false"/>
-            <p class="col text-white"><?= $admin['nama'] ?></p>
-        </div>
+            <!-- <p class="col text-white"><?= $admin['nama'] ?></p> -->
+        <!-- </div> -->
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="../profile/profile.php">Profile</a></li>
             <li><a class="dropdown-item" href="/pkl/onlineshop/auth/logout.php">Logout</a></li>
         </ul>
     </div>
@@ -56,9 +56,21 @@ $admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE id = $
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?= ($path == 'user') ? 'active' : '' ?>" href="#">
+                <a class="nav-link <?= ($path == 'kategori') ? 'active' : '' ?>" href="/pkl/onlineshop/admin/kategori/kategori.php">
                     <span data-feather="users"></span>
-                    Customers
+                    Kategori
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?= ($path == 'meja') ? 'active' : '' ?>" href="/pkl/onlineshop/admin/meja/meja.php">
+                    <span data-feather="users"></span>
+                    Meja
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?= ($path == 'user') ? 'active' : '' ?>" href="/pkl/onlineshopkategori/kategori.php">
+                    <span data-feather="users"></span>
+                    Admin
                 </a>
             </li>
         </ul>

@@ -25,10 +25,12 @@ if (isset($_GET['kategori'])) {
 
         .card {
             height: 450px;
+            min-width: 200px;
         }
 
         .card img {
-            height: 200px;
+            height: 150px;
+            width: auto;
         }
 
         .products {
@@ -81,13 +83,13 @@ if (isset($_GET['kategori'])) {
     <?php include 'navbar.php' ?>
     <div class="container">
         <div class="search mt-5">
-            <form class="d-flex" role="search">
+            <!-- <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            </form> -->
         </div>
-        <div class="d-flex flex-row justify-content-between overflow-auto mt-5">
-            <div class="kategori">
+        <div class="d-flex flex-row justify-content-round overflow-auto mt-5">
+            <div class="kategori mr-3">
                 <ul class="list-group list-group-flush">
                     <a href="index.php">
                         <li class="list-group-item <?= (!isset($_GET['kategori'])) ? 'active' : '' ?>">Semua</li>
@@ -100,20 +102,17 @@ if (isset($_GET['kategori'])) {
                     <?php endforeach ?>
                 </ul>
             </div>
-            <div class="products col-6-sm-3 overflow-auto overflow-x-hidden">
+            <div class="products col-6-sm-3 overflow-auto overflow-x-hidden ms-3 w-100">
                 <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <?php foreach ($produk as $data) :
-                        $id_prooduk = $data['id']
-                    ?>
-                        <div class="pesan col">
-                            <div class="card w-fit-content">
+                    <?php foreach ($produk as $data) : ?>
+                        <div class="col">
+                            <div class="card">
                                 <img src="<?= $data['gambar'] ?>" class="card-img-top" alt="...">
                                 <div class="card-body">
                                     <form action="pesan.php" method="post">
                                         <h5 class="card-title"><?= $data['judul'] ?></h5>
-                                        <p class="card-text"><?= $data['deskripsi'] ?></p>
-                                        <p class="card-text harga">Rp. <?= number_format($data['harga'], 2, ',', '.') ?></p>
-                                        <a href="?id=<?= $data['id'] ?>" class="btn-pesan btn btn-primary">Pesan</a>
+                                        <p class="card-text harga">Rp. <?= number_format($data['harga'], 0, ',', '.') ?></p>
+                                        <a href="?id=<?= $data['id_produk'] ?>" class="btn-pesan btn btn-primary">Pesan</a>
                                     </form>
                                 </div>
                             </div>
@@ -126,13 +125,12 @@ if (isset($_GET['kategori'])) {
 
     <?php if (isset($_GET['id'])) :
         $id = $_GET['id'];
-        $pesanan = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM produk WHERE id = $id"));
+        $pesanan = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM produk WHERE id_produk = $id"));
 
         $judul = $pesanan['judul'];
         $harga = $pesanan['harga'];
         $gambar = $pesanan['gambar'];
-        $deskripsi = $pesanan['deskripsi'];
-        $id = $pesanan['id'];
+        $id = $pesanan['id_produk'];
     ?>
         <div class="popup container-fluid show" id="popup">
             <div class="d-flex justify-content-center align-items-center">
@@ -143,8 +141,13 @@ if (isset($_GET['kategori'])) {
                             <img src="<?= $gambar ?>" class="col-4" alt="">
                             <div class="card-body col-6">
                                 <h5 class="card-title"><?= $judul ?></h5>
-                                <p class="card-text">Harga <?= $harga ?></p>
+                                <p class="card-text" id="harga">Harga <?= number_format($harga, 0, ',', '.') ?></p>
                                 <form action="pesan.php?id=<?= $id ?>" method="post">
+                                    <label for="jumlah" class="form-label">Jumlah</label>
+                                    <div class="mb-3">
+                                        <input type="number" class="form-control" name="jummlah" id="jumlah" value="1">
+                                    </div>
+                                    <label for="meja" class="form-label">Meja</label>
                                     <select class="form-select" name="meja" id="">
                                         <?php
                                         $meja = mysqli_query($conn, 'SELECT * FROM meja');
@@ -162,7 +165,7 @@ if (isset($_GET['kategori'])) {
                                 </div>
                                 </form>
                                 <div class="col-1">
-                                    <button href="#" class="btn btn-danger" onclick="togglePopup()">cancel</button>
+                                    <a href="index.php" class="btn btn-danger" onclick="togglePopup()">cancel</a>
                                 </div>
                             </div>
                         </div>
@@ -176,10 +179,17 @@ if (isset($_GET['kategori'])) {
     <script>
         const popup = document.getElementById('popup');
         const button = document.querySelectorAll('.btn-pesan');
+        const jumlah = document.getElementById('jumlah');
+        jumlah.addEventListener('change', () => {
+            let val = jumlah.value;
+            if (val < 1) {
+                jumlah.value = 1;
+            }
+        })
 
         function togglePopup() {
             popup.classList.toggle('show');
-            console.log(popup);
+            // console.log(popup);
         }
     </script>
 </body>

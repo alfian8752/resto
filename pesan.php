@@ -3,9 +3,9 @@ include 'db.php';
 include 'auth/auth.php';
 
 $id = $_GET['id'];
-$data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM produk WHERE id = $id"));
+$data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM produk WHERE id_produk = $id"));
 $user = $_SESSION['user']['id'];
-$produk = $data['id'];
+$produk = $data['id_produk'];
 $meja = $_POST['meja'];
 
 $timestamp = time();

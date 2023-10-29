@@ -129,12 +129,21 @@ $ad = mysqli_query($conn, "SELECT * FROM user WHERE role = 'admin'");
         </div>
 
         <div class="tindakan">
-          <div class="row g-4 mt-5">
+          <div class="row-cols-1 row-cols-md-3 g-4 mt-5">
             <div class="col">
-              <a href="produk/tambah-produk.php" class="card shadow rounded">
+              <a href="produk/tambah-produk.php" class="card shadow rounded mb-3">
                 <div class="card-body">
                   <h5 class="card-title">Tambah Produk</h5>
-                  <p class="card-text"><?= mysqli_num_rows($produk) ?></p>
+                  <!-- <p class="card-text"><?= mysqli_num_rows($produk) ?></p> -->
+                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                </div>
+              </a>
+            </div>
+            <div class="col">
+              <a href="kategori/kategori.php" class="card shadow rounded">
+                <div class="card-body">
+                  <h5 class="card-title">Tambah Kategori</h5>
+                  <!-- <p class="card-text"><?= mysqli_num_rows($produk) ?></p> -->
                   <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
                 </div>
               </a>
@@ -145,7 +154,7 @@ $ad = mysqli_query($conn, "SELECT * FROM user WHERE role = 'admin'");
   </div>
 
 
-  <script src="../../dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../dist/js/bootstrap.bundle.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>

@@ -1,7 +1,7 @@
 <?php
 include '../../auth/auth-admin.php';
 include '../../db.php';
-$produk = mysqli_query($conn, 'SELECT * FROM produk');
+$produk = mysqli_query($conn, 'SELECT * FROM produk INNER JOIN kategori ON produk.kategori = kategori.id');
 ?>
 
 <!doctype html>
@@ -75,6 +75,17 @@ $produk = mysqli_query($conn, 'SELECT * FROM produk');
 
       <!-- Main section  -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <?php if (isset($_GET['success'])) { ?>
+                    <div class="alert alert-success alert-dismissible <?= (isset($_GET['success'])) ? 'show' : '' ?>" role="alert">
+                        <strong><?= $_GET['success']; ?></strong>
+                        <a href="produk.php" class="btn-close"></a>
+                    </div>
+                <?php } else if (isset($_GET['failed'])) { ?>
+                    <div class="alert alert-success alert-dismissible <?= (isset($_GET['success'])) ? 'show' : '' ?>" role="alert">
+                        <strong><?= $_GET['failed']; ?></strong>
+                        <a href="produk.php" class="btn-close"></a>
+                    </div>
+                <?php } ?>
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 class="h2">Daftar Menu</h1>
           <!-- <div class="btn-toolbar mb-2 mb-md-0"> -->
@@ -99,6 +110,7 @@ $produk = mysqli_query($conn, 'SELECT * FROM produk');
                 <th scope="col">Kode</th>
                 <th scope="col">Gambar</th>
                 <th scope="col">Produk</th>
+                <th scope="col">Kategori</th>
                 <th scope="col">Harga</th>
                 <th class="text-center" scope="col">Tindakan</th>
               </tr>
@@ -107,19 +119,20 @@ $produk = mysqli_query($conn, 'SELECT * FROM produk');
               <?php foreach ($produk as $row) : ?>
                 <tr d-flex flex-column justify-content-center>
                   <td>
-                    <p class="align-middle"><?= $row['id'] ?></p>
+                    <p class="align-middle"><?= $row['id_produk'] ?></p>
                   </td>
                   <td><img src="<?= $row['gambar'] ?>"></td>
                   <td><?= $row['judul'] ?></td>
-                  <td><?= $row['harga'] ?></td>
+                  <td><?= $row['kategori'] ?></td>
+                  <td>Rp. <?= number_format($row['harga'], 0, ',', '.') ?></td>
                   <td class="action text-center">
-                    <a href="delete.php" type="submit" class="btn btn-danger" onclick="return confirm('Anda ingin menghapus produk <?= $row['judul'] ?>')">
+                    <a href="delete-produk.php?id=<?= $row['id_produk'] ?>" type="submit" class="btn btn-danger" onclick="return confirm('Anda ingin menghapus produk <?= $row['judul'] ?>')">
                       <div class="row">
                         <img class="col" src="../../assets/bootstrap-icons/icons/trash3.svg" alt="">
                         <div class="col fw-bold">Hapus</div>
                       </div>
                     </a>
-                    <a href="functions/edit.php?id=<?= $row['id'] ?>" class="btn btn-primary">
+                    <a href="edit-produk.php?id=<?= $row['id_produk'] ?>" class="btn btn-primary">
                       <div class="row">
                         <img class="color-white" src="../../assets/bootstrap-icons/icons/pencil-square.svg" alt="" class="col">
                         <div class="col fw-bold">Edit</div>

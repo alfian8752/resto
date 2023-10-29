@@ -1,6 +1,84 @@
 <?php
 include '../../db.php';
 $kategori = mysqli_query($conn, "SELECT * FROM kategori") or die(mysqli_error($conn));
+
+if (isset($_POST["submit"])) {
+  // die(var_dump($_FILES));
+  // Upload gambar
+  $target_dir = "../../assets/produk-image/";
+  $target_file = $target_dir . basename($_FILES["fileInput"]["name"]);
+  $uploadOk = 1;
+  $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+
+
+  // upload data
+  $nama = $_POST['nama'];
+  $harga = $_POST['harga'];
+  $kategori = $_POST['kategori'];
+  $gambar = '/pkl/onlineshop/assets/produk-image/' . basename($_FILES["fileInput"]["name"]);
+  var_dump($_POST);
+  var_dump($nama . "<br>");
+  var_dump($harga);
+  var_dump($gambar . "<br>");
+
+  //   // mysqli_query($conn, "INSERT INTO produk VALUES ('', '$gambar', '$nama', '$deskripsi', '$harga', '$kategori')");
+  if (mysqli_query($conn, "INSERT INTO produk VALUES ('', '$gambar', '$nama', '$harga', '$kategori')")) {
+    move_uploaded_file($_FILES["fileInput"]["tmp_name"], $target_file);
+    echo "produk baru ditambahkan";
+    header('Location: /pkl/onlineshop/admin/produk/produk.php');
+
+    // Check if image file is a actual image or fake image
+    $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+    if ($check !== false) {
+      echo "File is an image - " . $check["mime"] . ".";
+      $uploadOk = 1;
+    } else {
+      echo "File is not an image.";
+      $uploadOk = 0;
+    }
+    // }
+
+    // Check if file already exists
+    if (file_exists($target_file)) {
+      echo "Sorry, file already exists.";
+      $uploadOk = 0;
+    }
+
+    // Check file size
+    if ($_FILES["fileToUpload"]["size"] > 500000) {
+      echo "Sorry, your file is too large.";
+      $uploadOk = 0;
+    }
+
+    // Allow certain file formats
+    if (
+      $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+      && $imageFileType != "gif"
+    ) {
+      echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+      $uploadOk = 0;
+    }
+
+
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+      echo "Sorry, your file was not uploaded.";
+      // if everything is ok, try to upload file
+    } else {
+      if (move_uploaded_file($_FILES["fileInput"]["tmp_name"], $target_file)) {
+        echo "The file " . htmlspecialchars(basename($_FILES["fileInput"]["name"])) . " has been uploaded.";
+      } else {
+        echo "Sorry, there was an error uploading your file.";
+      }
+    }
+  } else {
+    header('Location: /pkl/onlineshop/admin/dashboard/produk.php');
+    echo "produk gagal ditambahkan";
+  }
+  var_dump($uploadOk);
+}
+
 ?>
 
 <!doctype html>
@@ -61,31 +139,31 @@ $kategori = mysqli_query($conn, "SELECT * FROM kategori") or die(mysqli_error($c
         </div>
         <!-- <a href="uploadProduk.php" class="btn btn-success">Tambah Produk</a> -->
         <div class="tambah-produk">
-          <form class="div" action="../../php/upload_produk.php" method="post" enctype="multipart/form-data">
+          <form class="" action="" method="post" enctype="multipart/form-data">
             <div class="gambar">
               <input type="file" id="fileInput" name="fileInput" accept="image/*">
               <img id="previewGambar" src="#" alt="Pratinjau Gambar" style="display: none;">
             </div>
-            <div class="form-floating mb-3">
-              <input type="text" class="form-control " name="nama" placeholder="">
+            <div class="mb-3">
               <label for="floatingInput">Nama Produk</label>
+              <input type="text" class="form-control " name="nama" placeholder="">
             </div>
-            <div class="form-floating mb-3">
-              <input type="number" class="form-control " name="harga" placeholder="">
+            <div class="mb-3">
               <label for="floatingPassword">Harga</label>
+              <input type="number" class="form-control " name="harga" placeholder="">
             </div>
             <!-- <div class="form-floating"> -->
-              <select class="form-select w-fit-content" name="kategori" id="kategori">
-                <?php foreach ($kategori as $row) : ?>
-                  <option value="<?= $row['id'] ?>"><?= $row['kategori'] ?></option>
-                <?php endforeach ?>
-              </select>
+            <select class="form-select w-fit-content" name="kategori" id="kategori">
+              <?php foreach ($kategori as $row) : ?>
+                <option value="<?= $row['id'] ?>"><?= $row['kategori'] ?></option>
+              <?php endforeach ?>
+            </select>
             <!-- </div> -->
             <!-- <div class="input-deskripsi">
               <input id="deskripsi" type="hidden" name="deskripsi">
               <trix-editor input="deskripsi"></trix-editor>
             </div> -->
-            <input class="btn btn-primary mt-5" type="submit" value="Upload">
+            <input class="btn btn-primary mt-5" type="submit" name="submit" value="Upload">
           </form>
         </div>
       </main>

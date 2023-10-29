@@ -3,7 +3,7 @@
 include 'db.php';
 include 'auth/auth.php';
 $user_id = $_SESSION['user']['id'];
-$pesanan = mysqli_query($conn, "SELECT * FROM pesanan INNER JOIN produk ON pesanan.produk = produk.id WHERE user = $user_id");
+$pesanan = mysqli_query($conn, "SELECT * FROM pesanan INNER JOIN produk ON pesanan.produk = produk.id_produk WHERE user = $user_id");
 
 ?>
 
@@ -39,7 +39,7 @@ $pesanan = mysqli_query($conn, "SELECT * FROM pesanan INNER JOIN produk ON pesan
                         <div class="card mb-3" style="max-width: 700px;">
                             <div class="row g-0">
                                 <div class="card-header">
-                                    Status <span class="<?= ($data['stat'] == 'selesai') ? 'text-success' : 'text-danger' ?>"><?= $data['stat'] ?></span>
+                                    Status <span class="<?php if($data['stat'] == 'selesai')echo 'text-success'; else if($data['stat'] == 'proses') echo 'text-primary'; else echo 'text-danger' ?>"><?= $data['stat'] ?></span>
                                 </div>
                                 <div class="col-md-4">
                                     <img src="<?= $data['gambar'] ?>" class="img-fluid rounded-start" alt="...">
@@ -51,10 +51,10 @@ $pesanan = mysqli_query($conn, "SELECT * FROM pesanan INNER JOIN produk ON pesan
                                         <!-- <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
                                         <p class="card-text harga">Rp. <?= number_format($data['harga'], 2, ',','.') ?></p>
                                         <p class="card-text">Meja <?= $data['meja'] ?></p>
-                                        <a href="" class="btn btn-danger">Batalkan</a>
-                                        <a href="" class="btn btn-primary">Ganti Meja</a>
+                                        <!-- <a href="" class="btn btn-danger">Batalkan</a>
+                                        <a href="" class="btn btn-primary">Ganti Meja</a> -->
                                         <br>
-                                        <a href="" class="btn btn-success mt-3">Selesai</a>
+                                        <a href="pesanan-selesai.php?id=<?= $data['id_pesanan'] ?>" class="btn btn-success mt-3">Selesai</a>
                                         </a>
                                     </div>
                                 </div>
