@@ -4,6 +4,12 @@ include '../../auth/auth-admin.php';
 
 $id = $_GET['id'];
 // var_dump($id);
-mysqli_query($conn, "UPDATE pesanan SET stat = 'proses' WHERE id_pesanan = $id") or die(mysqli_error($conn));
 
-// header('Location: pesanan.php');
+if (mysqli_query($conn, "UPDATE pesanan SET stat = 'proses' WHERE id_pesanan = $id")) {
+    $success = "Pesanan Diterima";
+    header("location: pesanan.php?success=$success");
+} else {
+    $failed = "gagal";
+    header("location: pesanan.php?success=$failed");
+}
+header('Location: pesanan.php');

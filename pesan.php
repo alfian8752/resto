@@ -12,5 +12,6 @@ $timestamp = time();
 $date = date("Y-m-d H:i:s", $timestamp);
 // var_dump($data);
 mysqli_query($conn, "INSERT INTO pesanan VALUES ('', '$produk', '$user', '$meja', '$date', 'menunggu')");
+mysqli_query($conn,"UPDATE meja SET used = 1 WHERE no_meja = $meja");
 
 header('Location: index.php');

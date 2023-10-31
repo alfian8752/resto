@@ -1,5 +1,6 @@
 <?php
 include '../../db.php';
+include '../../auth/auth-admin.php';
 
 if (isset($_POST['submit'])) {
     $kategori = $_POST['kategori'];

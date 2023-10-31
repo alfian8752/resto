@@ -1,6 +1,5 @@
 <?php
 include '../db.php';
-
 // if (session_status() == PHP_SESSION_NONE) session_start();
 
 //     $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE username = '$username' AND pass = '$password'"));
@@ -16,18 +15,35 @@ include '../db.php';
 //     if (!$user) {
 //         $error = true;
 //     }
+// echo $_SERVER['REQUEST_METHOD'] . "<br>";
 if (isset($_POST['submit'])) {
     $errors = [];
     $username = $_POST['username'];
-    $email = $_POST['email'];
+    // $email = $_POST['email'];
     $password = $_POST['password'];
 
-    if (strlen($username) < 5) {
-        $errors['username'] = 'username minimal memiliki 5 karakter';
-    } else if (strlen($password < 8)) {
-        $errors['password'] = 'Password minimal memiliki 8 karakter';
+    if (strlen($username) < 3) {
+        $errors['username'] = 'username minimal memiliki 3 karakter';
     } else {
-        mysqli_query($conn, "INSERT INTO user VALUES ('', '$username', '$email', '$password', null)");
+        $users = mysqli_fetch_row(mysqli_query($conn, "SELECT username FROM user"));
+        // var_dump(count($users));
+        for ($i = 0; $i < count($users); $i++) {
+            if ($users[$i] == $username) {
+                $errors['username'] = "Username sudah digunakan";
+                break;
+            }
+        }
+    }
+
+    if (strlen($password) < 8) {
+        $errors['password'] = 'Password minimal memiliki 8 karakter';
+    }
+
+    if (empty($errors)) {
+        // die(true);
+        mysqli_query($conn, "INSERT INTO user VALUES ('', null, '$username', null, '$password', 'user')");
+        $message = "Anda berhasil Register";
+        header("location: login.php?message=$message");
     }
 }
 ?>
@@ -69,7 +85,7 @@ if (isset($_POST['submit'])) {
                 <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?= (isset($_POST['username'])) ? $_POST['username'] : '' ?>" required>
             </div> -->
             <?php
-            if (isset($errors)) : ?>
+            if (!empty($errors)) : ?>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Username</label>
                     <input type="text" class="form-control <?= (isset($errors['username'])) ? 'is-invalid' : '' ?>" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?= $username ?>" required>
@@ -78,15 +94,8 @@ if (isset($_POST['submit'])) {
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Username</label>
-                    <input type="text" class="form-control <?= (isset($errors['email'])) ? 'is-invalid' : '' ?>" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?= $email ?>" required>
-                    <div id="validationServerUsernameFeedback" class="invalid-feedback">
-                        <?= $errors['email'] ?>
-                    </div>
-                </div>
-                <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Password</label>
-                    <input type="text" class="form-control <?= (isset($errors['password'])) ? 'is-invalid' : '' ?>" name="password" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                    <input type="password" class="form-control <?= (isset($errors['password'])) ? 'is-invalid' : '' ?>" name="password" id="exampleInputEmail1" aria-describedby="emailHelp" required>
                     <div id="validationServerUsernameFeedback" class="invalid-feedback">
                         <?= $errors['password'] ?>
                     </div>
@@ -96,17 +105,17 @@ if (isset($_POST['submit'])) {
                     <label for="exampleInputEmail1" class="form-label">Username</label>
                     <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" required>
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">email</label>
                     <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                </div>
+                </div> -->
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Password</label>
                     <input type="password" class="form-control" name="password" id="exampleInputPassword1" required>
                 </div>
             <?php endif ?>
             <p>Sudah punya akun? <a href="login.php">Login</a></p>
-            <button type="submit" name="submit" class="btn btn-primary w-75 m-auto" value="submit">Login</button>
+            <button type="submit" name="submit" class="btn btn-primary w-100" value="submit">Register</button>
         </form>
     </div>
 

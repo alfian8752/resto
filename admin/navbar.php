@@ -11,17 +11,24 @@ $admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE id = $
 ?>
 
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <div class="dropend">
-        <!-- <div class="row"> -->
-            <img src="/pkl/onlineshop/assets/img/user.png" style="max-width: 50px;" class="col dropdown-toggle p-1" data-bs-toggle="dropdown" aria-expanded="false"/>
-            <!-- <p class="col text-white"><?= $admin['nama'] ?></p> -->
-        <!-- </div> -->
+    <!-- <div class="dropend"> -->
+    <!-- <img src="/pkl/onlineshop/assets/img/user.png" style="max-width: 50px;" class="col dropdown-toggle p-1" data-bs-toggle="dropdown" aria-expanded="false"/>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="../profile/profile.php">Profile</a></li>
+            <li><a class="dropdown-item" href="/pkl/onlineshop/admin/profile/profile.php">Profile</a></li>
+            <li><a class="dropdown-item" href="/pkl/onlineshop/auth/logout.php">Logout</a></li>
+        </ul> -->
+    <!-- </div> -->
+    <div class="dropend">
+        <p class="dropdown-toggle text-white" style="margin: 0 10px !important;" data-bs-toggle="dropdown" aria-expanded="false">
+            Admin
+        </p>
+        <!-- Dropdown menu links -->
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/pkl/onlineshop/admin/profile/profile.php">Profile</a></li>
             <li><a class="dropdown-item" href="/pkl/onlineshop/auth/logout.php">Logout</a></li>
         </ul>
     </div>
-    <!-- <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#"></a> -->
+    <!-- <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="../">Admin</a> -->
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -68,9 +75,9 @@ $admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE id = $
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?= ($path == 'user') ? 'active' : '' ?>" href="/pkl/onlineshopkategori/kategori.php">
+                <a class="nav-link <?= ($path == 'user') ? 'active' : '' ?>" href="/pkl/onlineshop/admin/users/user.php">
                     <span data-feather="users"></span>
-                    Admin
+                    User
                 </a>
             </li>
         </ul>

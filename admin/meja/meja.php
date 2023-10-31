@@ -13,7 +13,7 @@ $meja = mysqli_query($conn, 'SELECT * FROM meja');
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>Admin | meja</title>
+    <title>Admin | Meja</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
 
@@ -100,18 +100,18 @@ $meja = mysqli_query($conn, 'SELECT * FROM meja');
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah No Meja</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <a href="meja.php" class="btn-close" aria-label="Close"></a>
                             </div>
                             <div class="modal-body">
                                 <form action="tambah-meja.php" method="post">
                                     <div class="mb-3">
                                         <label for="meja" class="form-label">No Meja</label>
-                                        <input type="number" class="form-control tambah-meja" name="meja" aria-describedby="emailHelp" min="1" required>
+                                        <input type="number" class="form-control tambah-meja" name="meja" aria-describedby="emailHelp" min="1" autofocus required>
                                         <div id="validationServerUsernameFeedback" class="invalid-feedback">
                                             Meja sudah terdaftar
                                         </div>
                                     </div>
-                                    <button type="submit" name="submit" value="sumbit" class="btn btn-primary" id="tambah-btn" >Tambah</button>
+                                    <button type="submit" name="submit" value="sumbit" class="btn btn-primary" id="tambah-btn">Tambah</button>
                                 </form>
                             </div>
                         </div>
@@ -127,14 +127,14 @@ $meja = mysqli_query($conn, 'SELECT * FROM meja');
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit meja-<?= $idEdit ?></h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Meja Nomor <?= $idEdit ?></h1>
+                                    <a href="meja.php" class="btn-close" aria-label="Close"></a>
                                 </div>
                                 <div class="modal-body">
                                     <form action="edit-meja.php?id=<?= $_GET['edit'] ?>" method="post">
                                         <div class="mb-3">
                                             <label for="meja" class="form-label">No Meja</label>
-                                            <input type="number" class="form-control edit-meja" name="meja" min="1" aria-describedby="emailHelp" value="<?= $editMeja['no_meja'] ?>">
+                                            <input type="number" class="form-control edit-meja" name="meja" min="1" aria-describedby="emailHelp" value="<?= $editMeja['no_meja'] ?>" autofocus>
                                             <div id="validationServerUsernameFeedback" class="invalid-feedback">
                                                 Meja sudah terdaftar
                                             </div>
@@ -152,10 +152,10 @@ $meja = mysqli_query($conn, 'SELECT * FROM meja');
 
 
                 <div class="table-responsive meja-section">
-                    <table class="table table-striped table-sm" cellpadding="10">
+                    <table class="table table-striped table-sm text-center" cellpadding="10">
                         <thead class="table-dark">
                             <tr>
-                                <th scope="col">Id</th>
+                                <th scope="col">Nomor Meja</th>
                                 <th scope="col">Status</th>
                                 <th class="text-center" scope="col">Tindakan</th>
                             </tr>
@@ -169,18 +169,34 @@ $meja = mysqli_query($conn, 'SELECT * FROM meja');
                                     </td>
                                     <td><?= ($row['used']) ? 'Sedang Digunakan' : 'Kosong' ?></td>
                                     <td class="action text-center">
-                                        <a href="delete-meja.php?id=<?= $row['no_meja'] ?>" class="btn btn-danger" onclick="return confirm('Anda ingin menghapus meja <?= $row['no_meja'] ?>')">
-                                            <div class="row">
-                                                <img class="col" src="../../assets/bootstrap-icons/icons/trash3.svg" alt="">
-                                                <div class="col fw-bold">Hapus</div>
-                                            </div>
-                                        </a>
+                                        <?php if ($row['used'] == 0) : ?>
+                                            <a href="delete-meja.php?id=<?= $row['no_meja'] ?>" class="btn btn-danger" onclick="return confirm('Anda ingin menghapus meja <?= $row['no_meja'] ?>')">
+                                                <!-- <button class="btn btn-primary"> -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                                                </svg>
+                                                <!-- </div> -->
+                                                <!-- </button> -->
+                                            </a>
+                                        <?php else : ?>
+                                            <a href="meja.php" class="btn btn-danger" onclick="return confirm('Tidak bisa menghapus meja nomor <?= $row['no_meja'] ?> karena sedang digunakan')">
+                                                <!-- <button class="btn btn-primary"> -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                                                </svg>
+                                                <!-- </div> -->
+                                                <!-- </button> -->
+                                            </a>
+                                        <?php endif ?>
                                         <a href="meja.php?edit=<?= $row['no_meja'] ?>" class="btn btn-primary">
                                             <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editmejaModal"> -->
-                                            <div class="row">
-                                                <img class="color-white" src="../../assets/bootstrap-icons/icons/pencil-square.svg" alt="" class="col">
-                                                <div class="col fw-bold">Edit</div>
-                                            </div>
+                                            <!-- <div class="row"> -->
+                                            <!-- <img class="color-white" src="../../assets/bootstrap-icons/icons/pencil-square.svg" alt="" class="col"> -->
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                            </svg>
+                                            <!-- </div> -->
                                             <!-- </button> -->
                                         </a>
                                     </td>
@@ -210,31 +226,32 @@ $meja = mysqli_query($conn, 'SELECT * FROM meja');
     <?php endif ?>
 
     <script>
-        const editMeja = document.querySelector('.edit-meja')
-        const tambahMeja = document.querySelector('.tambah-meja')
-        const noMeja = document.querySelectorAll('.list-meja')
-
-        editMeja.addEventListener('change', () => {
-            for (let i = 0; i < noMeja.length; i++) {
-                const element = noMeja[i];
-                if (editMeja.value == element.innerHTML) {
-                    editMeja.classList.add('is-invalid');
-                    document.getElementById('edit-btn').setAttribute('disabled', true)
-                    break;
-                } else {
-                    editMeja.classList.remove('is-invalid');
-                }
-            }
-        });
+        const noMeja = document.querySelectorAll('.list-meja');
+        const tambahMeja = document.querySelector('.tambah-meja');
+        console.log(tambahMeja);
         tambahMeja.addEventListener('change', () => {
             for (let i = 0; i < noMeja.length; i++) {
-                const element = noMeja[i];
-                if (tambahMeja.value == element.innerHTML) {
+                let tambah = noMeja[i];
+                if (tambahMeja.value == tambah.innerHTML) {
                     tambahMeja.classList.add('is-invalid');
                     document.getElementById('tambah-btn').setAttribute('disabled', true)
                     break;
                 } else {
                     tambahMeja.classList.remove('is-invalid');
+                }
+            }
+        });
+
+        const editMeja = document.querySelector('.edit-meja');
+        editMeja.addEventListener('change', () => {
+            for (let i = 0; i < noMeja.length; i++) {
+                let edit = noMeja[i];
+                if (editMeja.value == edit.innerHTML) {
+                    editMeja.classList.add('is-invalid');
+                    document.getElementById('edit-btn').setAttribute('disabled', true)
+                    break;
+                } else {
+                    editMeja.classList.remove('is-invalid');
                 }
             }
         });

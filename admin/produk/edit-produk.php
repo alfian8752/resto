@@ -1,87 +1,95 @@
 <?php
+include '../../auth/auth-admin.php';
 include '../../db.php';
-$kategori = mysqli_query($conn, "SELECT * FROM kategori");
+$kategori = mysqli_query($conn, "SELECT * FROM kategori ORDER BY kategori ASC");
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $produk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM produk WHERE id_produk = $id"));
     // var_dump($produk);
 }
 if (isset($_POST["submit"])) {
+    // die(var_dump($_FILES));
     // Upload gambar
-    $target_dir = "/pkl/onlineshop/assets/produk-image/";
+    // die(var_dump($_FILES));
+    $target_dir = "../../assets/produk-image/";
     $target_file = $target_dir . basename($_FILES["fileInput"]["name"]);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
+    
+    
+    
     // upload data
     $nama = $_POST['nama'];
     $harga = $_POST['harga'];
     $kategori = $_POST['kategori'];
+    // die(var_dump(strlen($_FILES['fileInput']['name']) > 0));
+    if(strlen($_FILES['fileInput']['name']) > 0) {
+        $gambar = '/pkl/onlineshop/assets/produk-image/' . basename($_FILES["fileInput"]["name"]);
+    } else {
+        $gambar = $produk['gambar'];
+    }
+
+    // die($gambar);
     // var_dump($_POST);
     // var_dump($nama . "<br>");
     // var_dump($harga);
     // var_dump($gambar . "<br>");
-    
-    // mysqli_query($conn, "INSERT INTO produk VALUES ('', '$gambar', '$nama', '$deskripsi', '$harga', '$kategori')");
-    
-    // Check if image file is a actual image or fake image
-    if (isset($_FILES['fileToUpload'])) {
-            $gambar = '/pkl/onlinesop/assets/' . basename($_FILES["fileInput"]["name"]);
-            $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-            if ($check !== false) {
-                echo "File is an image - " . $check["mime"] . ".";
-                $uploadOk = 1;
-            } else {
-                echo "File is not an image.";
-                $uploadOk = 0;
-            }
-            // }
 
-            // Check if file already exists
-            if (file_exists($target_file)) {
-                echo "Sorry, file already exists.";
-                $uploadOk = 0;
-            }
-
-            // Check file size
-            if ($_FILES["fileToUpload"]["size"] > 500000) {
-                echo "Sorry, your file is too large.";
-                $uploadOk = 0;
-            }
-
-            // Allow certain file formats
-            if (
-                $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-                && $imageFileType != "gif"
-            ) {
-                echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-                $uploadOk = 0;
-            }
-
-
-            // Check if $uploadOk is set to 0 by an error
-            if ($uploadOk == 0) {
-                echo "Sorry, your file was not uploaded.";
-                // if everything is ok, try to upload file
-            } else {
-                if (move_uploaded_file($_FILES["fileInput"]["tmp_name"], $target_file)) {
-                    echo "The file " . htmlspecialchars(basename($_FILES["fileInput"]["name"])) . " has been uploaded.";
-                } else {
-                    echo "Sorry, there was an error uploading your file.";
-                }
-            } 
-        }
-        else {
-            $gambar= $produk['gambar'];
-        }
+    //   // mysqli_query($conn, "INSERT INTO produk VALUES ('', '$gambar', '$nama', '$deskripsi', '$harga', '$kategori')");
     if (mysqli_query($conn, "UPDATE produk SET gambar = '$gambar', judul = '$nama', harga = '$harga', kategori = '$kategori' WHERE id_produk = $id")) {
         // move_uploaded_file($_FILES["fileInput"]["tmp_name"], $target_file);
-        echo "produk baru ditambahkan";
-        header('Location: /pkl/onlineshop/admin/produk/produk.php');
+        $message['success'] = 'Produk berhasil diedit';
+        header("Location: /pkl/onlineshop/admin/produk/produk.php?success=" . $message['success']);
+
+        // Check if image file is a actual image or fake image
+        // $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+        // if ($check !== false) {
+        //     echo "File is an image - " . $check["mime"] . ".";
+        //     $uploadOk = 1;
+        // } else {
+        //     echo "File is not an image.";
+        //     $uploadOk = 0;
+        // }
+        // }
+
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            echo "Sorry, file already exists.";
+            $uploadOk = 0;
+        }
+
+        // Check file size
+        // if ($_FILES["fileToUpload"]["size"] > 500000) {
+        //     echo "Sorry, your file is too large.";
+        //     $uploadOk = 0;
+        // }
+
+        // Allow certain file formats
+        if (
+            $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif"
+        ) {
+            echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            $uploadOk = 0;
+        }
+
+
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            die("Sorry, your file was not uploaded.");
+            // if everything is ok, try to upload file
+        } else {
+            if (move_uploaded_file($_FILES["fileInput"]["tmp_name"], $target_file)) {
+                echo "The file " . htmlspecialchars(basename($_FILES["fileInput"]["name"])) . " has been uploaded.";
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+            }
+        }
     } else {
         header('Location: /pkl/onlineshop/admin/dashboard/produk.php');
         echo "produk gagal ditambahkan";
     }
+    var_dump($uploadOk);
 }
 ?>
 
@@ -101,8 +109,6 @@ if (isset($_POST["submit"])) {
 
 
     <!-- costom css -->
-    <link rel="stylesheet" href="../uploadProduk.css">
-
 
 
     <!-- Bootstrap core CSS -->
@@ -121,6 +127,14 @@ if (isset($_POST["submit"])) {
             .bd-placeholder-img-lg {
                 font-size: 3.5rem;
             }
+        }
+
+        .gambar {
+            width: 300px;
+        }
+
+        .gambar img {
+            max-width: 100%;
         }
     </style>
 
@@ -144,23 +158,24 @@ if (isset($_POST["submit"])) {
                 <!-- <a href="uploadProduk.php" class="btn btn-success">Tambah Produk</a> -->
                 <div class="tambah-produk">
                     <form class="div" action="" method="post" enctype="multipart/form-data">
-                        <div class="gambar">
-                            <input type="file" id="fileInput" name="fileInput" accept="image/*" value="<?= $produk['gambar'] ?>">
-                            <img id="previewGambar" src="<?= $produk['gambar'] ?>" alt="Pratinjau Gambar" style="display: block;">
+                        <div class="gambar mb-3">
+                            <label class="form-label" for="fileInput" class="form-label">Nama Produk</label>
+                            <input type="file" class="form-control" id="fileInput" name="fileInput" accept="image/*">
+                            <img id="previewGambar" src="<?= $produk['gambar'] ?>" alt="Pratinjau Gambar" style="display: block;" class="mt-2">
                         </div>
                         <div class="mb-3">
-                            <label for="floatingInput">Nama Produk</label>
+                            <label class="form-label" for="floatingInput">Nama Produk</label>
                             <input type="text" class="form-control " name="nama" placeholder="" value="<?= $produk['judul'] ?>">
                         </div>
                         <div class="mb-3">
-                            <label for="floatingPassword">Harga</label>
-                            <input type="number" class="form-control " name="harga" placeholder="" value="<?= $produk['harga'] ?>">
+                            <label class="form-label" for="floatingPassword">Harga</label>
+                            <input type="number" class="form-control " name="harga" placeholder="" value="<?= $produk['harga'] ?>" min="1">
                         </div>
                         <!-- <div class="form-floating"> -->
-                        <label for="">Kategori</label>
+                        <label class="form-label" for="">Kategori</label>
                         <select class="form-select w-fit-content" name="kategori" id="kategori">
                             <?php foreach ($kategori as $row) : ?>
-                                <option value="<?= $row['id'] ?>" selected="<?= ($row['id'] == $produk['kategori']) ? 'selected' : '' ?>"><?= $row['kategori'] ?></option>
+                                <option value="<?= $row['id'] ?>"<?= ($row['id'] == $produk['kategori']) ? 'selected' : '' ?>><?= $row['kategori'] ?></option>
                             <?php endforeach ?>
                         </select>
                         <!-- </div> -->

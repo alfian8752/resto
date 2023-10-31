@@ -1,14 +1,16 @@
 <?php
 include '../../db.php';
+include '../../auth/auth-admin.php';
+
 
 if (isset($_POST['submit'])) {
-    $kategori = $_POST['kategori'];
+    $meja = $_POST['meja'];
 
-    if (mysqli_query($conn, "INSERT INTO kategori VALUES ('', '$kategori')")) {
+    if (mysqli_query($conn, "INSERT INTO meja VALUES ('$meja', 0)")) {
         $success = "Kategori $kategori berhasil ditambahkan";
-        header("location: kategori.php?success=$success");
+        header("location: meja.php?success=$success");
     } else {
         $failed = "Kategori $kategori gagal ditambahkan";
-        header("location: kategori.php?success=$failed");
+        header("location: meja.php?success=$failed");
     }
 }

@@ -3,7 +3,7 @@ include '../db.php';
 $produk = mysqli_query($conn, "SELECT * FROM produk");
 $pesanan = mysqli_query($conn, "SELECT * FROM pesanan");
 $kategori = mysqli_query($conn, "SELECT * FROM kategori");
-$ad = mysqli_query($conn, "SELECT * FROM user WHERE role = 'admin'");
+$user = mysqli_query($conn, "SELECT * FROM user WHERE role = 'user'");
 ?>
 
 <!doctype html>
@@ -83,8 +83,8 @@ $ad = mysqli_query($conn, "SELECT * FROM user WHERE role = 'admin'");
         </div>
 
         <?php
-        // var_dump(mysqli_num_rows($admin));
-        // var_dump($admin);
+        // var_dump(mysqli_num_rows($usermin));
+        // var_dump($usermin);
         ?>
         <div class="daftar">
 
@@ -119,8 +119,8 @@ $ad = mysqli_query($conn, "SELECT * FROM user WHERE role = 'admin'");
             <div class="col">
               <a href="kategori/kategori.php" class="card shadow rounded" style="width: 18rem;">
                 <div class="card-body">
-                  <h5 class="card-title">Kategori</h5>
-                  <p class="card-text"><?= mysqli_num_rows($ad) ?></p>
+                  <h5 class="card-title">User</h5>
+                  <p class="card-text"><?= mysqli_num_rows($user) ?></p>
                   <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
                 </div>
               </a>

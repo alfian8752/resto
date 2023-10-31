@@ -95,7 +95,7 @@ if (isset($_GET['kategori'])) {
                         <li class="list-group-item <?= (!isset($_GET['kategori'])) ? 'active' : '' ?>">Semua</li>
                     </a>
                     <?php
-                    foreach (mysqli_query($conn, "SELECT * FROM kategori") as $kategori) : ?>
+                    foreach (mysqli_query($conn, "SELECT * FROM kategori ORDER BY kategori ASC") as $kategori) : ?>
                         <a href="?kategori=<?= $kategori['id'] ?>">
                             <li class="list-group-item <?= (isset($_GET['kategori']) && $_GET['kategori'] == $kategori['id']) ? 'active' : '' ?>"><?= $kategori['kategori'] ?></li>
                         </a>
@@ -103,7 +103,7 @@ if (isset($_GET['kategori'])) {
                 </ul>
             </div>
             <div class="products col-6-sm-3 overflow-auto overflow-x-hidden ms-3 w-100">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="row row-cols-1 row-cols-md-4 g-4">
                     <?php foreach ($produk as $data) : ?>
                         <div class="col">
                             <div class="card">
@@ -143,17 +143,17 @@ if (isset($_GET['kategori'])) {
                                 <h5 class="card-title"><?= $judul ?></h5>
                                 <p class="card-text" id="harga">Harga <?= number_format($harga, 0, ',', '.') ?></p>
                                 <form action="pesan.php?id=<?= $id ?>" method="post">
-                                    <label for="jumlah" class="form-label">Jumlah</label>
+                                    <!-- <label for="jumlah" class="form-label">Jumlah</label>
                                     <div class="mb-3">
                                         <input type="number" class="form-control" name="jummlah" id="jumlah" value="1">
-                                    </div>
+                                    </div> -->
                                     <label for="meja" class="form-label">Meja</label>
                                     <select class="form-select" name="meja" id="">
                                         <?php
-                                        $meja = mysqli_query($conn, 'SELECT * FROM meja');
-                                        for ($i = 1; $i <= 10; $i++) : ?>
-                                            <option value="<?= $i ?>">Meja <?= $i ?></option>
-                                        <?php endfor ?>
+                                        $meja = mysqli_query($conn, "SELECT * FROM meja WHERE used = 0");
+                                        foreach ($meja as $item) : ?>
+                                            <option value="<?= $item['no_meja'] ?>">Meja <?= $item['no_meja'] ?></option>
+                                        <?php endforeach ?>
                                     </select>
                             </div>
                         </div>

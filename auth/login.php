@@ -2,6 +2,7 @@
 include '../db.php';
 
 if (session_status() == PHP_SESSION_NONE) session_start();
+$error = false;
 
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
@@ -45,10 +46,15 @@ if (isset($_POST['submit'])) {
             margin: auto;
         }
 
-        .alert {
+        .alert-failed {
             width: fit-content;
             position: relative;
             top: 50px;
+            margin: auto;
+        }
+
+        .alert-register-success {
+            max-width: 50%;
             margin: auto;
         }
 
@@ -59,10 +65,18 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
-    <div class="alert alert-warning alert-dismissible fade <?= ($error) ? 'show' : '' ?>" role="alert">
+    <?php if($error) : ?>
+    <div class="alert-failed alert alert-warning alert-dismissible fade <?= ($error) ? 'show' : '' ?>" role="alert">
         <strong>Email atau password salah</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+    <?php endif ?>
+    <?php if(isset($_GET['message'])) : ?>
+    <div class="alert-register-success alert alert-success alert-dismissible fade <?= (isset($_GET['message'])) ? 'show' : '' ?>" role="alert">
+        <strong><?= $_GET['message'] ?></strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <?php endif ?>
     <div class="container">
         <h3 class="login-title text-center">Login</h3>
         <form action="" method="POST">

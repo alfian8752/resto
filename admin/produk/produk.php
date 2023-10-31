@@ -13,7 +13,7 @@ $produk = mysqli_query($conn, 'SELECT * FROM produk INNER JOIN kategori ON produ
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Hugo 0.84.0">
-  <title>Dashboard Template · Bootstrap v5.0</title>
+  <title>Admin | Menu</title>
 
   <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
 
@@ -75,17 +75,17 @@ $produk = mysqli_query($conn, 'SELECT * FROM produk INNER JOIN kategori ON produ
 
       <!-- Main section  -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <?php if (isset($_GET['success'])) { ?>
-                    <div class="alert alert-success alert-dismissible <?= (isset($_GET['success'])) ? 'show' : '' ?>" role="alert">
-                        <strong><?= $_GET['success']; ?></strong>
-                        <a href="produk.php" class="btn-close"></a>
-                    </div>
-                <?php } else if (isset($_GET['failed'])) { ?>
-                    <div class="alert alert-success alert-dismissible <?= (isset($_GET['success'])) ? 'show' : '' ?>" role="alert">
-                        <strong><?= $_GET['failed']; ?></strong>
-                        <a href="produk.php" class="btn-close"></a>
-                    </div>
-                <?php } ?>
+        <?php if (isset($_GET['success'])) { ?>
+          <div class="alert alert-success alert-dismissible <?= (isset($_GET['success'])) ? 'show' : '' ?>" role="alert">
+            <strong><?= $_GET['success']; ?></strong>
+            <a href="produk.php" class="btn-close"></a>
+          </div>
+        <?php } else if (isset($_GET['failed'])) { ?>
+          <div class="alert alert-success alert-dismissible <?= (isset($_GET['success'])) ? 'show' : '' ?>" role="alert">
+            <strong><?= $_GET['failed']; ?></strong>
+            <a href="produk.php" class="btn-close"></a>
+          </div>
+        <?php } ?>
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <h1 class="h2">Daftar Menu</h1>
           <!-- <div class="btn-toolbar mb-2 mb-md-0"> -->
@@ -104,10 +104,10 @@ $produk = mysqli_query($conn, 'SELECT * FROM produk INNER JOIN kategori ON produ
           <i class="bi bi-plus"></i>Tambah Menu
         </a>
         <div class="table-responsive produk-section">
-          <table class="table table-striped table-sm">
+          <table class="table table-striped table-sm text-center">
             <thead>
               <tr>
-                <th scope="col">Kode</th>
+                <th scope="col">No. </th>
                 <th scope="col">Gambar</th>
                 <th scope="col">Produk</th>
                 <th scope="col">Kategori</th>
@@ -116,10 +116,10 @@ $produk = mysqli_query($conn, 'SELECT * FROM produk INNER JOIN kategori ON produ
               </tr>
             </thead>
             <tbody class="w-100" style="max-height: 80vh; box-sizing: border-box; overflow: auto;">
-              <?php foreach ($produk as $row) : ?>
+              <?php $i=1; foreach ($produk as $row) : ?>
                 <tr d-flex flex-column justify-content-center>
                   <td>
-                    <p class="align-middle"><?= $row['id_produk'] ?></p>
+                    <p class="align-middle"><?= $i++ ?></p>
                   </td>
                   <td><img src="<?= $row['gambar'] ?>"></td>
                   <td><?= $row['judul'] ?></td>
@@ -128,14 +128,17 @@ $produk = mysqli_query($conn, 'SELECT * FROM produk INNER JOIN kategori ON produ
                   <td class="action text-center">
                     <a href="delete-produk.php?id=<?= $row['id_produk'] ?>" type="submit" class="btn btn-danger" onclick="return confirm('Anda ingin menghapus produk <?= $row['judul'] ?>')">
                       <div class="row">
-                        <img class="col" src="../../assets/bootstrap-icons/icons/trash3.svg" alt="">
-                        <div class="col fw-bold">Hapus</div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                          <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                        </svg>
                       </div>
                     </a>
                     <a href="edit-produk.php?id=<?= $row['id_produk'] ?>" class="btn btn-primary">
                       <div class="row">
-                        <img class="color-white" src="../../assets/bootstrap-icons/icons/pencil-square.svg" alt="" class="col">
-                        <div class="col fw-bold">Edit</div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                          <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                          <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                        </svg>
                       </div>
                     </a>
                   </td>
