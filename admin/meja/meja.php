@@ -237,6 +237,7 @@ $meja = mysqli_query($conn, 'SELECT * FROM meja');
                     document.getElementById('tambah-btn').setAttribute('disabled', true)
                     break;
                 } else {
+                    document.getElementById('tambah-btn').removeAttribute('disabled')
                     tambahMeja.classList.remove('is-invalid');
                 }
             }
@@ -248,9 +249,10 @@ $meja = mysqli_query($conn, 'SELECT * FROM meja');
                 let edit = noMeja[i];
                 if (editMeja.value == edit.innerHTML) {
                     editMeja.classList.add('is-invalid');
-                    document.getElementById('edit-btn').setAttribute('disabled', true)
+                    console.log(document.getElementById('edit-btn').setAttribute('disabled', true))
                     break;
                 } else {
+                    document.getElementById('edit-btn').removeAttribute('disabled')
                     editMeja.classList.remove('is-invalid');
                 }
             }

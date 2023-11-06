@@ -2,95 +2,66 @@
 include '../../auth/auth-admin.php';
 include '../../db.php';
 $kategori = mysqli_query($conn, "SELECT * FROM kategori ORDER BY kategori ASC");
+
+$errors = [];
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $produk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM produk WHERE id_produk = $id"));
     // var_dump($produk);
 }
+$errors = [];
 if (isset($_POST["submit"])) {
     // die(var_dump($_FILES));
     // Upload gambar
-    // die(var_dump($_FILES));
     $target_dir = "../../assets/produk-image/";
-    $target_file = $target_dir . basename($_FILES["fileInput"]["name"]);
-    $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    
-    
-    
+    $imageFileType = strtolower(pathinfo($_FILES['fileInput']['name'], PATHINFO_EXTENSION));
+    $image_name = time() . hash('md5', $_FILES["fileInput"]["name"]);
+    $target_file = $target_dir . $image_name . '.' . $imageFileType;
+
+
+    // die(var_dump($_FILES));
+
+
     // upload data
+    $uploadOk = 1;
     $nama = $_POST['nama'];
     $harga = $_POST['harga'];
     $kategori = $_POST['kategori'];
-    // die(var_dump(strlen($_FILES['fileInput']['name']) > 0));
-    if(strlen($_FILES['fileInput']['name']) > 0) {
-        $gambar = '/pkl/onlineshop/assets/produk-image/' . basename($_FILES["fileInput"]["name"]);
+    //   die(strlen($_FILES['fileInput']['name']) > 0);
+    if (strlen($_FILES['fileInput']['name']) > 0) {
+        $gambar = $image_name . '.' . $imageFileType;
+        unlink('../../assets/produk-image/' . $produk['gambar']);
+        if (
+            $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            ) {
+            $errors['image'] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+            $uploadOk = 0;
+        }
     } else {
         $gambar = $produk['gambar'];
     }
 
-    // die($gambar);
-    // var_dump($_POST);
-    // var_dump($nama . "<br>");
-    // var_dump($harga);
-    // var_dump($gambar . "<br>");
-
-    //   // mysqli_query($conn, "INSERT INTO produk VALUES ('', '$gambar', '$nama', '$deskripsi', '$harga', '$kategori')");
-    if (mysqli_query($conn, "UPDATE produk SET gambar = '$gambar', judul = '$nama', harga = '$harga', kategori = '$kategori' WHERE id_produk = $id")) {
-        // move_uploaded_file($_FILES["fileInput"]["tmp_name"], $target_file);
-        $message['success'] = 'Produk berhasil diedit';
-        header("Location: /pkl/onlineshop/admin/produk/produk.php?success=" . $message['success']);
-
-        // Check if image file is a actual image or fake image
-        // $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-        // if ($check !== false) {
-        //     echo "File is an image - " . $check["mime"] . ".";
-        //     $uploadOk = 1;
-        // } else {
-        //     echo "File is not an image.";
-        //     $uploadOk = 0;
-        // }
-        // }
-
-        // Check if file already exists
-        if (file_exists($target_file)) {
-            echo "Sorry, file already exists.";
-            $uploadOk = 0;
-        }
-
-        // Check file size
-        // if ($_FILES["fileToUpload"]["size"] > 500000) {
-        //     echo "Sorry, your file is too large.";
-        //     $uploadOk = 0;
-        // }
-
-        // Allow certain file formats
-        if (
-            $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-            && $imageFileType != "gif"
-        ) {
-            echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-            $uploadOk = 0;
-        }
+    // Allow certain file formats
 
 
-        // Check if $uploadOk is set to 0 by an error
-        if ($uploadOk == 0) {
-            die("Sorry, your file was not uploaded.");
-            // if everything is ok, try to upload file
-        } else {
-            if (move_uploaded_file($_FILES["fileInput"]["tmp_name"], $target_file)) {
-                echo "The file " . htmlspecialchars(basename($_FILES["fileInput"]["name"])) . " has been uploaded.";
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 1) {
+        // if everything is ok, try to upload file
+        if (empty($errors)) {
+            # code...
+            if (mysqli_query($conn, "UPDATE produk set gambar = '$gambar', judul = '$nama', harga = '$harga', kategori = '$kategori' where id_produk = $id")) {
+                $message['success'] = 'Produk berhasil ditambahkan';
+                header("Location: /pkl/onlineshop/admin/produk/produk.php?success=" . $message['success']);
             } else {
-                echo "Sorry, there was an error uploading your file.";
+                header('Location: /pkl/onlineshop/admin/produk/produk.php');
             }
+
+            move_uploaded_file($_FILES["fileInput"]["tmp_name"], $target_file);
         }
-    } else {
-        header('Location: /pkl/onlineshop/admin/dashboard/produk.php');
-        echo "produk gagal ditambahkan";
     }
-    var_dump($uploadOk);
 }
+// var_dump($uploadOk);
+
 ?>
 
 <!doctype html>
@@ -102,7 +73,7 @@ if (isset($_POST["submit"])) {
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>Dashboard Template · Bootstrap v5.0</title>
+    <title>Admin | Edit Produk</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
@@ -160,8 +131,11 @@ if (isset($_POST["submit"])) {
                     <form class="div" action="" method="post" enctype="multipart/form-data">
                         <div class="gambar mb-3">
                             <label class="form-label" for="fileInput" class="form-label">Nama Produk</label>
-                            <input type="file" class="form-control" id="fileInput" name="fileInput" accept="image/*">
-                            <img id="previewGambar" src="<?= $produk['gambar'] ?>" alt="Pratinjau Gambar" style="display: block;" class="mt-2">
+                            <input type="file" class="form-control <?= (isset($errors['image'])) ? 'is-iinvalid' : '' ?> " id="fileInput" name="fileInput" accept="image/*">
+                            <div class="invalid-feedback">
+                                <?= $errors['message'] ?>
+                            </div>
+                            <img id="previewGambar" src="../../assets/produk-image/<?= $produk['gambar'] ?>" alt="Pratinjau Gambar" style="display: block;" class="mt-2">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="floatingInput">Nama Produk</label>
@@ -175,7 +149,7 @@ if (isset($_POST["submit"])) {
                         <label class="form-label" for="">Kategori</label>
                         <select class="form-select w-fit-content" name="kategori" id="kategori">
                             <?php foreach ($kategori as $row) : ?>
-                                <option value="<?= $row['id'] ?>"<?= ($row['id'] == $produk['kategori']) ? 'selected' : '' ?>><?= $row['kategori'] ?></option>
+                                <option value="<?= $row['id'] ?>" <?= ($row['id'] == $produk['kategori']) ? 'selected' : '' ?>><?= $row['kategori'] ?></option>
                             <?php endforeach ?>
                         </select>
                         <!-- </div> -->

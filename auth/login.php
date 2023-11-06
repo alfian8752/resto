@@ -9,6 +9,9 @@ if (isset($_POST['submit'])) {
     $password = $_POST['password'];
     $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE username = '$username' AND pass = '$password'"));
     $_SESSION['user'] = $user;
+    if (isset($_SESSION['user'])) {
+        $_SESSION['login']['user'] = $_SESSION['user']['id'];
+    }
 
     if (isset($_SESSION['user'])) {
         if ($_SESSION['user']['role'] == 'admin') {
@@ -65,21 +68,21 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
-    <?php if($error) : ?>
-    <div class="alert-failed alert alert-warning alert-dismissible fade <?= ($error) ? 'show' : '' ?>" role="alert">
-        <strong>Email atau password salah</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    <?php if ($error) : ?>
+        <div class="alert-failed alert alert-warning alert-dismissible fade <?= ($error) ? 'show' : '' ?>" role="alert">
+            <strong>Email atau password salah</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     <?php endif ?>
-    <?php if(isset($_GET['message'])) : ?>
-    <div class="alert-register-success alert alert-success alert-dismissible fade <?= (isset($_GET['message'])) ? 'show' : '' ?>" role="alert">
-        <strong><?= $_GET['message'] ?></strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    <?php if (isset($_GET['message'])) : ?>
+        <div class="alert-register-success alert alert-success alert-dismissible fade <?= (isset($_GET['message'])) ? 'show' : '' ?>" role="alert">
+            <strong><?= $_GET['message'] ?></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     <?php endif ?>
     <div class="container">
         <h3 class="login-title text-center">Login</h3>
-        <form action="" method="POST">
+        <form action="login.php" method="POST">
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Username</label>
                 <input type="text" class="form-control" name="username" id="exampleInputEmail1" aria-describedby="emailHelp" value="" required>

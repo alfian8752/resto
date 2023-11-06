@@ -1,26 +1,34 @@
 <?php
 include '../db.php';
+
 // if (session_status() == PHP_SESSION_NONE) session_start();
 
 //     $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE username = '$username' AND pass = '$password'"));
 //     $_SESSION['user'] = $user;
 
 //     if (isset($_SESSION['user'])) {
-//         if ($_SESSION['user']['role'] == 'admin') {
-//             header('location: ../admin');
+    //         if ($_SESSION['user']['role'] == 'admin') {
+        //             header('location: ../admin');
 //         } else if ($_SESSION['user']['role'] == 'user') {
 //             header('location: ../index.php');
 //         }
 //     }
 //     if (!$user) {
-//         $error = true;
+    //         $error = true;
 //     }
 // echo $_SERVER['REQUEST_METHOD'] . "<br>";
+// var_dump($user);
 if (isset($_POST['submit'])) {
     $errors = [];
     $username = $_POST['username'];
     // $email = $_POST['email'];
     $password = $_POST['password'];
+    
+    // cek username sudah digunakan atau belum
+    $user = mysqli_fetch_assoc(mysqli_query($conn,"SELECT username FROM user where username = '$username'"));
+    if($user != null) {
+        $errors['username'] = "Username sudah digunakan";
+    }
 
     if (strlen($username) < 3) {
         $errors['username'] = 'username minimal memiliki 3 karakter';

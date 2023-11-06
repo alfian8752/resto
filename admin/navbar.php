@@ -19,7 +19,7 @@ $admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE id = $
         </ul> -->
     <!-- </div> -->
     <div class="dropend">
-        <p class="dropdown-toggle text-white" style="margin: 0 10px !important;" data-bs-toggle="dropdown" aria-expanded="false">
+        <p class="dropdown-toggle text-white" style="margin: 0 10px !important; cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">
             Admin
         </p>
         <!-- Dropdown menu links -->
@@ -77,7 +77,7 @@ $admin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM user WHERE id = $
             <li class="nav-item">
                 <a class="nav-link <?= ($path == 'user') ? 'active' : '' ?>" href="/pkl/onlineshop/admin/users/user.php">
                     <span data-feather="users"></span>
-                    User
+                    Akun
                 </a>
             </li>
         </ul>

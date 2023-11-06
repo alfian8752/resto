@@ -82,6 +82,16 @@ if (isset($_GET['kategori'])) {
 <body>
     <?php include 'navbar.php' ?>
     <div class="container">
+        <?php if (isset($_GET['message'])) { ?>
+            <div class="alert alert-success alert-dismissible <?= (isset($_GET['success'])) ? 'show' : '' ?>" role="alert">
+                <strong><?= $_GET['message']; ?></strong>
+                <a href="index.php" class="btn-close"></a>
+            </div>
+        <?php } ?>
+        <!-- <div class="alert alert-success alert-dismissible <?= (isset($_GET['success'])) ? 'show' : '' ?>" role="alert">
+                        <strong><?= $_GET['failed']; ?></strong>
+                        <a href="pesanan.php" class="btn-close"></a>
+                    </div> -->
         <div class="search mt-5">
             <!-- <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -107,7 +117,7 @@ if (isset($_GET['kategori'])) {
                     <?php foreach ($produk as $data) : ?>
                         <div class="col">
                             <div class="card">
-                                <img src="<?= $data['gambar'] ?>" class="card-img-top" alt="...">
+                                <img src="assets/produk-image/<?= $data['gambar'] ?>" class="card-img-top object-fit-cover" alt="...">
                                 <div class="card-body">
                                     <form action="pesan.php" method="post">
                                         <h5 class="card-title"><?= $data['judul'] ?></h5>
@@ -172,8 +182,6 @@ if (isset($_GET['kategori'])) {
                     </div>
                 </div>
             </div>
-        </div>
-        </div>
         </div>
     <?php endif ?>
     <script>

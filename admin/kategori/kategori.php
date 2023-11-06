@@ -38,7 +38,7 @@ function cek_kategori($id)
     <meta name="generator" content="Hugo 0.84.0">
     <title>Admin | Kategori</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
+    <!-- <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/"> -->
 
 
 
@@ -223,8 +223,8 @@ function cek_kategori($id)
     </div>
 
     <script src="../../dist/js/bootstrap.bundle.js"></script>
-    <!-- <script src="../../dist/js/jquery.min.js"></script> -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../../dist/js/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
     <!-- <script>
         const modal = $('#editKategoriModal');
         console.log(modal);
@@ -238,7 +238,7 @@ function cek_kategori($id)
         </script>
     <?php endif ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script> -->
     <script src="../dashboard.js"></script>
 
     <script>
@@ -255,6 +255,7 @@ function cek_kategori($id)
                         document.getElementById('edit-btn').setAttribute('disabled', true)
                         break;
                     } else {
+                        document.getElementById('edit-btn').removeAttribute('disabled')
                         editKategori.classList.remove('is-invalid');
                     }
                 }
@@ -268,6 +269,7 @@ function cek_kategori($id)
                     document.getElementById('tambah-btn').setAttribute('disabled', true)
                     break;
                 } else {
+                    document.getElementById('tambah-btn').removeAttribute('disabled')
                     tambahKategori.classList.remove('is-invalid');
                 }
             }

@@ -2,7 +2,7 @@
 // require '../../php/delete_pesanan.php';
 include '../../auth/auth-admin.php';
 include '../../db.php';
-$users = mysqli_query($conn, "SELECT * FROM user");
+$users = mysqli_query($conn, "SELECT * FROM user WHERE role = 'user'");
 
 function cek_user($userid)
 {
@@ -103,7 +103,7 @@ function cek_user($userid)
                     </div>
                 <?php } ?>
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Pesanan</h1>
+                    <h1 class="h2">Akun User</h1>
                     <!-- <div class="btn-toolbar mb-2 mb-md-0"> -->
                     <!-- <div class="btn-group me-2">
               <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -118,7 +118,7 @@ function cek_user($userid)
                 <div class="table-responsive pesanan-section">
                     <table class="table table-striped table-sm text-center">
                         <thead class="thead-primary">
-                            <th>Id</th>
+                            <th>No</th>
                             <th>Username</th>
                             <th>Tidakan</th>
                         </thead>
@@ -126,7 +126,7 @@ function cek_user($userid)
                             <?php $n = 1;
                             foreach ($users as $user) : ?>
                                 <tr>
-                                    <th><?= $user['id'] ?></th>
+                                    <td><?= $n ?></td>
                                     <td><?= $user['username'] ?></td>
                                     <td class="action text-center">
                                         <?php if (cek_user($user['id'])) : ?>

@@ -123,11 +123,9 @@ $pesanan = mysqli_query($conn, 'SELECT * FROM pesanan INNER JOIN produk ON pesan
                   <td><?= $item['meja'] ?></td>
                   <td><?= $item['stat'] ?></td>
                   <td>
-                    <?php if ($item['stat'] == 'menunggu') { ?>
-                      <a href="terima-pesanan.php?id=<?= $item['id_pesanan'] ?>" class="btn btn-primary">Terima</a>
-                    <?php } else  if($item['stat'] == 'proses') { ?>
+                    <?php if($item['stat'] == 'proses') { ?>
                       <a href="pesanan-selesai.php?id=<?= $item['id_pesanan'] ?>" class="btn btn-success">Selesai</a>
-                    <?php } else echo 'Selesai' ?>
+                    <?php } else echo '' ?>
                   </td>
                 </tr>
               <?php 

@@ -50,7 +50,7 @@ $pesanan = mysqli_query($conn, "SELECT * FROM pesanan INNER JOIN produk ON pesan
                                                         else echo 'text-danger' ?>"><?= $data['stat'] ?></span>
                                 </div>
                                 <div class="col-md-4">
-                                    <img src="<?= $data['gambar'] ?>" class="img-fluid rounded-start" alt="...">
+                                    <img src="assets/produk-image/<?= $data['gambar'] ?>" class="img-fluid rounded-start" alt="...">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
@@ -62,7 +62,7 @@ $pesanan = mysqli_query($conn, "SELECT * FROM pesanan INNER JOIN produk ON pesan
                                         <!-- <a href="" class="btn btn-danger">Batalkan</a>
                                         <a href="" class="btn btn-primary">Ganti Meja</a> -->
                                         <br>
-                                        <a href="pesanan-selesai.php?id=<?= $data['id_pesanan'] . '"' . 'meja=' . $data['meja'] ?>" class="btn btn-success <?= ($data['stat'] != 'selesai') ? 'disabled' : '' ?> mt-3">Selesai</a>
+                                        <a href="pesanan-selesai.php?id=<?= $data['id_pesanan'] . '&&' . 'meja=' . $data['meja'] . '"' ?>" class="btn btn-success <?= ($data['stat'] != 'selesai') ? 'disabled' : '' ?> mt-3">Selesai</a>
                                         </a>
                                     </div>
                                 </div>
