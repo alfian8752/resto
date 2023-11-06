@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2023 at 05:46 AM
+-- Generation Time: Nov 06, 2023 at 10:05 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -39,8 +39,8 @@ CREATE TABLE `kategori` (
 INSERT INTO `kategori` (`id`, `kategori`) VALUES
 (3, 'Makanan Penutup'),
 (9, 'Makanan Pembuka'),
-(10, 'Minuman'),
-(12, 'Makanan Utama');
+(12, 'Makanan Utama'),
+(16, 'Minuman');
 
 -- --------------------------------------------------------
 
@@ -59,10 +59,10 @@ CREATE TABLE `meja` (
 
 INSERT INTO `meja` (`no_meja`, `used`) VALUES
 (1, 1),
-(2, 1),
-(3, 1),
-(4, 1),
-(5, 1),
+(2, 0),
+(3, 0),
+(4, 0),
+(5, 0),
 (6, 0),
 (7, 0),
 (8, 0),
@@ -81,7 +81,7 @@ CREATE TABLE `pesanan` (
   `user` int(11) NOT NULL,
   `meja` int(11) NOT NULL,
   `waktu` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `stat` enum('menunggu','proses','selesai','batal') NOT NULL DEFAULT 'menunggu'
+  `stat` enum('proses','selesai') NOT NULL DEFAULT 'proses'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -89,7 +89,7 @@ CREATE TABLE `pesanan` (
 --
 
 INSERT INTO `pesanan` (`id_pesanan`, `produk`, `user`, `meja`, `waktu`, `stat`) VALUES
-(55, 95, 6, 4, '2023-10-30 21:23:23', 'menunggu');
+(66, 122, 21, 1, '2023-11-05 20:47:36', 'proses');
 
 -- --------------------------------------------------------
 
@@ -110,12 +110,9 @@ CREATE TABLE `produk` (
 --
 
 INSERT INTO `produk` (`id_produk`, `gambar`, `judul`, `harga`, `kategori`) VALUES
-(95, '/pkl/onlineshop/assets/produk-image/Makanan-Khas-Indonesia-sate-1.jpg', 'Sate', 10000, 12),
-(96, '/pkl/onlineshop/assets/produk-image/Makanan-Khas-Indonesia-bakso.jpg', 'Bakso', 8000, 12),
-(98, '/pkl/onlineshop/assets/produk-image/Makanan-Khas-Indonesia-Nasi-goreng-364x241.jpg', 'Nasi Goreng', 12000, 12),
-(99, '/pkl/onlineshop/assets/produk-image/batagor.jpg', 'Batagor', 5000, 9),
-(100, '/pkl/onlineshop/assets/produk-image/cireng.jpg', 'Cireng', 5000, 9),
-(101, '/pkl/onlineshop/assets/produk-image/esteh.jpeg', 'Es Teh', 4000, 10);
+(121, '2f8019c72f65f9b1c1f904ba58066be0.jpg', 'Soto', 8000, 12),
+(122, '45f348e58a16a35f48eb7eb27dff6005.jpg', 'Nasi Goreng', 10000, 9),
+(130, '5675aaf619bd28c2e4a5fd5f3f196269.jpeg', 'Es Teh', 3000, 16);
 
 -- --------------------------------------------------------
 
@@ -137,10 +134,11 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `foto`, `username`, `email`, `pass`, `role`) VALUES
-(6, NULL, 'aaaaaa', NULL, 'password', 'user'),
-(7, NULL, 'abcdef', NULL, 'password', 'user'),
-(8, NULL, 'kkkkkk', NULL, 'password', 'user'),
-(11, NULL, 'admin', NULL, 'password', 'admin');
+(11, '/PKL/onlineshop/assets/img/user.png', 'Admin', 'admin@gmail.com', 'password', 'admin'),
+(21, NULL, 'user', NULL, 'password', 'user'),
+(23, NULL, 'user', NULL, 'password', 'user'),
+(24, NULL, 'user 1', NULL, 'password', 'user'),
+(25, NULL, 'user baru', NULL, '12345678', 'user');
 
 --
 -- Indexes for dumped tables
@@ -188,7 +186,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `meja`
@@ -200,19 +198,19 @@ ALTER TABLE `meja`
 -- AUTO_INCREMENT for table `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id_pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id_pesanan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `id_produk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Constraints for dumped tables
